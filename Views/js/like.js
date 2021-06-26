@@ -16,7 +16,7 @@ $(function() {
             //いいね！のカウントの削除
             like_count--;
             like_count_obj.html(like_count);
-            this_obj.data('like-id',null);
+            this_obj.data('like-id', null);
 
             //いいね！ボタンの色をグレーに変更
             $(this).find('img').attr('src','../Views/img/icon-heart.svg');
