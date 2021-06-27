@@ -33,7 +33,7 @@ function createUser(array $data)
     //処理を実行
     $response = $statement->execute();
     if($response === false) {
-        echo 'エラーメッセージ　:'. $mysqli->error . "\n";
+        echo 'エラーメッセージ :'. $mysqli->error . "\n";
     }
 
     //接続を解放
@@ -41,5 +41,57 @@ function createUser(array $data)
     $mysqli->close();
 
     return $response;
+}
+
+/***
+ * ユーザー情報取得 : ログインチェック
+ * 
+ * @param string $email
+ * @param string $password
+ * @return array | false
+ */
+function findUserAndCheckPassword(string $email, string $password)
+{
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    //接続チェック
+    if ($mysqli->connect_errno) {
+        echo 'MYSQLの接続に失敗しました。:' . $mysqli->connect_error . '\n';
+        exit;
+    }
+
+    //入力値をエスケープ
+    $email = $mysqli->real_escape_string($email);
+
+    //クエリを作成
+    // - 外部からのリクエストは何が入ってくるかわからないので、必ず、エスケープしたものをクオートで囲む
+    $query = 'SELECT * FROM users WHERE email = "'.$email.'"';
+
+    // SQLの実行
+    $result = $mysqli->query($query);
+    if (!$result) {
+        //MYSQL処理中にエラー発生
+        echo 'エラーメッセージ :' .$mysqli->error."\n";
+        $mysqli->close();
+        return false;
+    }
+
+    //ユーザー情報を取得
+    $user = $result->fetch_array(MYSQLI_ASSOC);
+    if (!$user) {
+        //ユーザーが存在しない
+        $mysqli->close();
+        return false;
+    }
+
+    //パスワードチェック
+    if(!password_verify($password, $user['password'])){
+        //パスワード不一致
+        $mysqli->close();
+        return false;
+    }
+
+    $mysqli->close();
+
+    return $user;
 
 }
