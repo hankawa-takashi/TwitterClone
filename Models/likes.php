@@ -48,7 +48,7 @@ function createLike(array $data)
 *@param array $data
 *@return bool
 */
-deleteLike(array $data)
+function deleteLike(array $data)
 {
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     //接続チェック
@@ -68,7 +68,7 @@ deleteLike(array $data)
     $response = $statement->execute();
 
     if ($response === false) {
-       echo 'エラーメッセージ:' . $mysqli->error . "\n"; 
+        echo 'エラーメッセージ:' . $mysqli->error . "\n"; 
     }
 
     //接続を閉じる
