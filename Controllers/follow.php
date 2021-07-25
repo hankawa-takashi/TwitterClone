@@ -10,6 +10,8 @@ include_once('../util.php');
 
 //フォローデーター操作モデルを読み込む
 include_once('../Models/follows.php');
+// 通知データー操作モデルを読み込む
+include_once('../Models/notifications.php');
 
 // ログインしているか
 $user = getUserSession();
@@ -21,13 +23,21 @@ if (!$user) {
 
 // フォローする
 $follow_id = null;
-if(isset($_POST['followed_user_id'])) {
+if (isset($_POST['followed_user_id'])) {
     $data = [
         'followed_user_id' => $_POST['followed_user_id'],
         'follow_user_id' => $user['id'],
     ];
     // フォロー登録
     $follow_id = createFollow($data);
+
+    // 通知を登録
+    $data_notification = [
+        'recieved_user_id' => $_POST['followed_user_id'],
+        'sent_user_id' => $user['id'],
+        'message' => 'フォローされました。',
+    ];
+    createNotification($data_notification);
 }
 
 // フォローIDが指定されている場合は、フォローを削除

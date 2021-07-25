@@ -152,7 +152,7 @@ function findUserANDCheckPassword(string $email, string $password)
 * @param integer $login_user_id
 * @return array|false
 */
-function findUser(int $user_id, int $login_user_id = null)
+function findUser( $user_id = null,  $login_user_id = null, string $email = null, string $name = null)
 {
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     //接続チェック
@@ -163,6 +163,10 @@ function findUser(int $user_id, int $login_user_id = null)
 
     // エスケープ
     $user_id = $mysqli->real_escape_string($user_id);
+    echo gettype($user_id);
+    $user_id = intval($user_id);
+    echo gettype($user_id);
+    
     $login_user_id = $mysqli->real_escape_string($login_user_id);
 
     // 検索のSQLを作成
