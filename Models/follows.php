@@ -1,4 +1,4 @@
-<?php
+i<?php
 /////////////////////////
 //フォローデーターを処理
 /////////////////////////
@@ -19,11 +19,11 @@ function createFollow(array $data)
     }
 
     //SQLを作成
-    $query = ' INSERT INTO follows (follow_user_id, followed_user_id) VALUES (?,?)';
+    $query = ' INSERT INTO follows (follow_user_id, follow_user_id) VALUES (?,?)';
     $statement = $mysqli->prepare($query);
 
     //プレースホルダーに値をセット
-    $statement->bind_param('ii', $data['follow_user_id'], $data['followed_user_id']);
+    $statement->bind_param('ii', $data['follow_user_id'], $data['follow_user_id']);
 
     //SQLの実行 
     if ($statement->execute()) {
@@ -101,7 +101,7 @@ function findFollowingUserIds(int $follow_user_id)
     $follow_user_id = $mysqli->real_escape_string($follow_user_id);
 
     // 検索のSQLを作成
-    $query = 'SELECT followed_user_id FROM follows WHERE status = "active" AND follow_user_id ="' . $follow_user_id . '"';
+    $query = 'SELECT follow_user_id FROM follows WHERE status = "active" AND follow_user_id ="' . $follow_user_id . '"';
 
     // SQLの実行
     $result = $mysqli->query($query);
@@ -118,7 +118,7 @@ function findFollowingUserIds(int $follow_user_id)
     // ユーザーIDの一覧を作成
     $following_user_ids = [];
     foreach ($follows as $follow) {
-        $following_user_ids[] = $follow['followed_user_id'];
+        $following_user_ids[] = $follow['follow_user_id'];
     }
 
     // 接続を閉じる
