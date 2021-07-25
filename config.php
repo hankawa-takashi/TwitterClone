@@ -4,7 +4,7 @@ ini_set('display_errors',1);
 //日本時間に設定
 date_default_timezone_set('Asia/Tokyo');
 //URL/ディレクトリ設定
-define('HOME_URL','/TwitterClone/');
+define('HOME_URL','https://nice-biedy.com/TwitterClone/');
 //データーベースの接続情報
 define('DB_HOST', '127.0.0.1');
 define('DB_USER', 'root');
